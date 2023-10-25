@@ -4,213 +4,251 @@ import pandas as pd
 import joblib
 
 # load our model pipeline object
-model = joblib.load("parkinsons_model.joblib")
+model = joblib.load("churn_model.joblib")
 
 # insert a title for the app and instructions
 
-st.title("Parkinsons Disease Prediction Model")
-st.subheader("Enter patient information and submit for likelihood of parkinson's disease")
+st.title("Customer Churn Prediction Model")
+st.subheader("Enter customer information and submit for likelihood of churn")
 
 
 # chest pain input form
 
-MDVP_Fo = st.number_input(
-    label = "Enter the patients's recorded MDVP:Fo(Hz) [0-300]",
-    min_value = 0.000000,
-    max_value = 300.000000,
-    value = 150.000000,
-    step=0.01,
-    format="%0.6f"
+SeniorCitizen = st.number_input(
+    label = "Enter whether the customer is a senior citizen [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
 
-MDVP_Fhi = st.number_input(
-    label = "Enter the patients's recorded MDVP:Fhi(Hz) [50-700]",
-    min_value = 50.0,
-    max_value = 700.0,
-    value = 500.0,
-    step=0.01,
-    format="%0.6f"
+tenure = st.number_input(
+    label = "Enter the customers's tenure status [1-72]",
+    min_value = 1,
+    max_value = 72,
+    value = 12,
     )
 
-MDVP_Flo = st.number_input(
-    label = "Enter the patients's recorded MDVP:Flo(Hz) [50-300]",
-    min_value = 50.0,
-    max_value = 300.0,
-    value = 100.0,
+MonthlyCharges = st.number_input(
+    label = "Enter the customers's monthly charge amount [0-150]",
+    min_value = 0.00,
+    max_value = 150.00,
+    value = 75.00,
     step=0.01,
-    format="%0.6f"
+    format="%0.2f"
     )
 
-MDVP_Jitter_pct = st.number_input(
-    label = "Enter the patients's recorded MDVP:Jitter(%) [0-1]",
-    min_value = 0.0,
-    max_value = 1.0,
-    value = 0.5,
+TotalCharges = st.number_input(
+    label = "Enter the customers's total charge value [0-9000]",
+    min_value = 0.00,
+    max_value = 9000.00,
+    value = 4500.00,
     step=0.01,
-    format="%0.6f"
+    format="%0.2f"
     )
 
-MDVP_Jitter_abs = st.number_input(
-    label = "Enter the patients's recorded MDVP:Jitter(Abs) [0-1]",
-    min_value = 0.0,
-    max_value = 1.0,
-    value = 0.0001,
-    step=0.01,
-    format="%0.6f"
+gender_Male = st.number_input(
+    label = "Enter whether the customer is male [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-MDVP_RAP = st.number_input(
-    label = "Enter the patients's recorded MDVP:RAP [0-1]",
-    min_value = 0.0,
-    max_value = 1.0,
-    value = .004,
-    step=0.01,
-    format="%0.6f"
+ 
+Partner_Yes = st.number_input(
+    label = "Enter whether the customer has a partner [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-MDVP_PPQ = st.number_input(
-    label = "Enter the patient's recorded MDVP:PPQ [0-1]",
-    min_value = 0.0,
-    max_value = 1.0,
-    value = 0.001,
-    step=0.01,
-    format="%0.6f"
+ 
+Dependents_Yes = st.number_input(
+    label = "Enter whether the customer has dependents [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-Jitter_DDP = st.number_input(
-    label = "Enter the patient's recorded Jitter:DDP [0-1]",
-    min_value = 0.0,
-    max_value = 1.0,
-    value = 0.001,
-    step=0.01,
-    format="%0.6f"
+ 
+PhoneService_Yes = st.number_input(
+    label = "Enter whether the customer has phone service [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-MDVP_Shimmer = st.number_input(
-    label = "Enter the patient's recorded MDVP:Shimmer [0-1]",
-    min_value = 0.0,
-    max_value = 1.0,
-    value = 0.05,
-    step=0.01,
-    format="%0.6f"
+ 
+MultipleLines_No_phone_service = st.number_input(
+    label = "Enter whether the customer has multiple phone lines [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-MDVP_Shimmer_db = st.number_input(
-    label = "Enter the patient's recorded MDVP:Shimmer(dB) [0-2]",
-    min_value = 0.0,
-    max_value = 2.0,
-    value = 1.0,
-    step=0.01,
-    format="%0.6f"
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-Shimmer_APQ3 = st.number_input(
-    label = "Enter the patient's recorded Shimmer:APQ3 [0-1]",
-    min_value = 0.0,
-    max_value = 1.0,
-    value = 0.007,
-    step=0.01,
-    format="%0.6f"
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-Shimmer_APQ5 = st.number_input(
-    label = "Enter the patient's recorded Shimmer:APQ5 [0-1]",
-    min_value = 0.0,
-    max_value = 1.0,
-    value = 0.05,
-    step=0.01,
-    format="%0.6f"
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-MDVP_APQ = st.number_input(
-    label = "Enter the patient's recorded MDVP:APQ [0-1]",
-    min_value = 0.0,
-    max_value = 1.0,
-    value = 0.1,
-    step=0.01,
-    format="%0.6f"
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-Shimmer_DDA = st.number_input(
-    label = "Enter the patient's recorded Shimmer:DDA [0-1]",
-    min_value = 0.0,
-    max_value = 1.0,
-    value = 0.1,
-    step=0.01,
-    format="%0.6f"
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-NHR = st.number_input(
-    label = "Enter the patient's recorded NHR [0-1]",
-    min_value = 0.0,
-    max_value = 1.0,
-    value = 0.2,
-    step=0.01,
-    format="%0.6f"
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-HNR = st.number_input(
-    label = "Enter the patient's recorded HNR [0-50]",
-    min_value = 0.0,
-    max_value = 50.0,
-    value = 30.0,
-    step=0.01,
-    format="%0.6f"
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-RPDE = st.number_input(
-    label = "Enter the patient's recorded RPDE [0-1]",
-    min_value = 0.0,
-    max_value = 1.0,
-    value = 0.5,
-    step=0.01,
-    format="%0.6f"
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-DFA = st.number_input(
-    label = "Enter the patient's recorded DFA [0-1]",
-    min_value = 0.0,
-    max_value = 1.0,
-    value = 0.6,
-    step=0.01,
-    format="%0.6f"
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-spread1 = st.number_input(
-    label = "Enter the patient's recorded spread1 [-10 - 0]",
-    min_value = -10.0,
-    max_value = 0.0,
-    value = -3.0,
-    step=0.01,
-    format="%0.6f"
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-spread2 = st.number_input(
-    label = "Enter the patient's recorded spread2 [0-1]",
-    min_value = 0.0,
-    max_value = 1.0,
-    value = 0.3,
-    step=0.01,
-    format="%0.6f"
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-D2 = st.number_input(
-    label = "Enter the patient's recorded D2 [1-4]",
-    min_value = 1.0,
-    max_value = 4.0,
-    value = 2.0,
-    step=0.01,
-    format="%0.6f"
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
-
-PPE = st.number_input(
-    label = "Enter the patient's recorded PPE [0-1]",
-    min_value = 0.0,
-    max_value = 1.0,
-    value = 0.3,
-    step=0.01,
-    format="%0.6f"
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
     )
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
+    )
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
+    )
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
+    )
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
+    )
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
+    )
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
+    )
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
+    )
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
+    )
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
+    )
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
+    )
+ 
+ = st.number_input(
+    label = "Enter the customers's recorded MDVP:Fo(Hz) [0-1]",
+    min_value = 0,
+    max_value = 1,
+    value = 1,
+    )
+ 
 
 
 ({"SeniorCitizen" :[SeniorCitizen],
@@ -252,28 +290,39 @@ PPE = st.number_input(
 
 if st.button("Submit For Prediction"):
     # store data into df for prediction
-    new_data = pd.DataFrame({"MDVP:Fo(Hz)" : [MDVP_Fo],
-    "MDVP:Fhi(Hz)" : [MDVP_Fhi],
-    "MDVP:Flo(Hz)" : [MDVP_Flo],
-    "MDVP:Jitter(%)" : [MDVP_Jitter_pct],
-    "MDVP:Jitter(Abs)" : [MDVP_Jitter_abs],
-    "MDVP:RAP" : [MDVP_RAP],
-    "MDVP:PPQ" : [MDVP_PPQ],
-    "Jitter:DDP" : [Jitter_DDP],
-    "MDVP:Shimmer" : [MDVP_Shimmer],
-    "MDVP:Shimmer(dB)" : [MDVP_Shimmer_db],
-    "Shimmer:APQ3" : [Shimmer_APQ3],
-    "Shimmer:APQ5" : [Shimmer_APQ5],
-    "MDVP:APQ" : [MDVP_APQ],
-    "Shimmer:DDA" : [Shimmer_DDA],
-    "NHR" : [NHR],
-    "HNR" : [HNR],
-    "RPDE" : [RPDE],
-    "DFA" : [DFA],
-    "spread1" : [spread1],
-    "spread2" : [spread2],
-    "D2" : [D2],
-    "PPE" : [PPE]})
+    new_data = pd.DataFrame({"SeniorCitizen" :[SeniorCitizen],
+    "tenure" : [tenure],
+    "MonthlyCharges" : [MonthlyCharges],
+    "TotalCharges" :[TotalCharges],
+    "gender_Male" : [gender_Male],
+    "Partner_Yes" : [Partner_Yes],
+    "Dependents_Yes" : [Dependents_Yes],
+    "PhoneService_Yes" : [PhoneService_Yes],
+    "MultipleLines_No phone service" : [MultipleLines_No_phone_service],
+    "MultipleLines_Yes" : [MultipleLines_Yes],
+    "InternetService_Fiber optic" : [InternetService_Fiber_optic],
+    "InternetService_No" : [InternetService_No],
+    "OnlineSecurity_No internet service" : [OnlineSecurity_No_internet_service],
+    "OnlineSecurity_Yes" : [OnlineSecurity_Yes],
+    "OnlineBackup_No internet service" : [OnlineBackup_No_internet_service],
+    "OnlineBackup_Yes" : [OnlineBackup_Yes],
+    "DeviceProtection_No internet service" : [DeviceProtection_No_internet_service],
+    "DeviceProtection_Yes" : [DeviceProtection_Yes],
+    "TechSupport_No internet service" : [TechSupport_No_internet_service],
+    "TechSupport_Yes" : [TechSupport_Yes],
+    "StreamingTV_No internet service" : [StreamingTV_No_internet_service],
+    "StreamingTV_Yes" : [StreamingTV_Yes],
+    "StreamingMovies_No internet service" : [StreamingMovies_No_internet_service],
+    "StreamingMovies_Yes" : [StreamingMovies_Yes],
+    "Contract_One year" : [Contract_One_year],
+    "Contract_Two year" : [Contract_Two_year],
+    "PaperlessBilling_Yes" : [PaperlessBilling_Yes],
+    "PaymentMethod_Credit card (automatic)" : [PaymentMethod_Credit_card_automatic],
+    "PaymentMethod_Electronic check" : [PaymentMethod_Electronic_check],
+    "PaymentMethod_Mailed check" : [PaymentMethod_Mailed_check],
+    "tenure_cohort_12-24 months" : [tenure_cohort_12_24_months],
+    "tenure_cohort_24-48 months" : [tenure_cohort_24_48_months],
+    "tenure_cohort_over 48 months" : [tenure_cohort_over_48_months]})
     
     # apply model pipeline to the input data and extract probability prediction
     pred_proba = model.predict_proba(new_data)[0][1]
